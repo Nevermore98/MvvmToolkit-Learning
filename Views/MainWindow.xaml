@@ -1,0 +1,36 @@
+﻿<Window x:Class="MvvmToolkitDemo01.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:MvvmToolkitDemo01"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        xmlns:vm="clr-namespace:MvvmToolkitDemo01.ViewModels"
+        Title="MainWindow"
+        Width="350"
+        Height="450"
+        d:DataContext="{d:DesignInstance vm:MainWindowVM,
+                                         IsDesignTimeCreatable=True}"
+        mc:Ignorable="d">
+    <!--  xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"  -->
+
+    <StackPanel>
+        <TextBox Margin="10" Text="{Binding Value1, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <TextBox Margin="10" Text="{Binding Value2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+
+        <WrapPanel>
+            <Button Margin="10"
+                    Command="{Binding CalculateCommand}"
+                    Content="Calculate" />
+            <Button Command="{Binding CalculateCancelCommand}" Content="Cancel" />
+        </WrapPanel>
+
+        <StackPanel HorizontalAlignment="Center">
+            <TextBlock Text="{Binding Status}" />
+            <TextBlock Text="{Binding DisplayResult, Mode=OneWay}" />
+
+            <TextBlock Text="{Binding Result}" />
+        </StackPanel>
+    </StackPanel>
+
+</Window>
