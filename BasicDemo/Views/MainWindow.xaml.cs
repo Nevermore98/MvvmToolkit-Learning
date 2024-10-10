@@ -1,7 +1,7 @@
-﻿using MvvmToolkitDemo01.ViewModels;
+﻿using BasicDemo.ViewModels;
 using System.Windows;
 
-namespace MvvmToolkitDemo01.Views
+namespace BasicDemo.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

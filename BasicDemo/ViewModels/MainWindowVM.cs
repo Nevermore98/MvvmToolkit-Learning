@@ -6,13 +6,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Wpf.Ui.Controls;
 
-namespace MvvmToolkitDemo01.ViewModels
+namespace BasicDemo.ViewModels
 {
     public partial class MainWindowVM : ObservableValidator
     {
-        [ObservableProperty]
-        [RegularExpression(@"^-?\d+$")]
-        [NotifyPropertyChangedFor(nameof(DisplayResult))]
+        [ObservableProperty] 
+        [RegularExpression(@"^-?\d+$")] // 正则表达式验证
+        [NotifyPropertyChangedFor(nameof(DisplayResult))] // 属性的值发生变化后通知属性变化
         [NotifyCanExecuteChangedFor(nameof(CalculateCommand))] // 属性的值发生变化后通知中继指令更新状态
         string value1;
 
@@ -25,6 +25,7 @@ namespace MvvmToolkitDemo01.ViewModels
          
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(DisplayResult))]
+       
         string result;
 
         public string DisplayResult => !string.IsNullOrEmpty(Value1) && !string.IsNullOrEmpty(Value2) ? $"{Value1} + {Value2} = {Result}" : string.Empty;
