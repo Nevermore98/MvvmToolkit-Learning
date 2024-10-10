@@ -14,29 +14,29 @@ namespace MvvmToolkitDemo01.ViewModels
         [RegularExpression(@"^-?\d+$")]
         [NotifyPropertyChangedFor(nameof(DisplayResult))]
         [NotifyCanExecuteChangedFor(nameof(CalculateCommand))] // 属性的值发生变化后通知中继指令更新状态
-        private string? _value1;
+        string value1;
 
         [ObservableProperty]
         [RegularExpression(@"^-?\d+$")]
         [NotifyPropertyChangedFor(nameof(DisplayResult))]
         [NotifyCanExecuteChangedFor(nameof(CalculateCommand))] // 属性的值发生变化后通知中继指令更新状态
-        private string? _value2;
+        string value2;
 
          
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(DisplayResult))]
-        private string? _result;
+        string result;
 
         public string DisplayResult => !string.IsNullOrEmpty(Value1) && !string.IsNullOrEmpty(Value2) ? $"{Value1} + {Value2} = {Result}" : string.Empty;
 
 
         [ObservableProperty]
-        private string? _status;
+        string status;
 
-        public bool CanCalculate => !string.IsNullOrEmpty(Value1) && !string.IsNullOrEmpty(Value2);
+        public bool CanCalculate => !string.IsNullOrEmpty(Value1) && ! string.IsNullOrEmpty(Value2);
 
         [ObservableProperty]
-        private string _errMessage;
+        string errMessage;
 
         // 同步指令
         //[RelayCommand(CanExecute = nameof(CanCalculate))]
@@ -60,7 +60,7 @@ namespace MvvmToolkitDemo01.ViewModels
             ValidateAllProperties();
             if (HasErrors)
             {
-                //ErrMessage =;
+                //ErrMessage = GetErrors();
                 var a = GetErrors();
             }
             try
