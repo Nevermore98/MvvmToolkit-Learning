@@ -1,0 +1,11 @@
+
+# All files
+[*]
+indent_style = space
+
+# Xml files
+[*.xml]
+indent_size = 2
+
+#忽略 XDG0010 错误
+dotnet_diagnostic.XDG0010.severity = none

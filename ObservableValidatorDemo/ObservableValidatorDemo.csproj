@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net472</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+	  <LangVersion>10.0</LangVersion>
+		<NoWarn>XDG0010</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Antelcat.I18N.WPF" Version="1.0.1" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+    <PackageReference Include="ValueConverters" Version="2.2.10" />
+    <PackageReference Include="WPF-UI" Version="3.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Lang.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Lang.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Lang.zh-CN.resx">
+      <LastGenOutput>Lang.zh-CN.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Lang.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Lang.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EditorConfigFiles Remove="D:\DotNet-Projects\MVVM学习项目\MvvmToolkitDemo\ObservableValidatorDemo\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="D:\DotNet-Projects\MVVM学习项目\MvvmToolkitDemo\ObservableValidatorDemo\.editorconfig" />
+  </ItemGroup>
+
+</Project>

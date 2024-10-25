@@ -1,0 +1,101 @@
+﻿<Window x:Class="ObservableValidatorDemo.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:conv="clr-namespace:ValueConverters;assembly=ValueConverters"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:ObservableValidatorDemo"
+        xmlns:m="clr-namespace:ObservableValidatorDemo.Models"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        xmlns:vm="clr-namespace:ObservableValidatorDemo.ViewModels"
+        Title="MainWindow"
+        Width="400"
+        Height="500"
+        d:DataContext="{d:DesignInstance vm:MainWindowVM,
+                                         IsDesignTimeCreatable=True}"
+        mc:Ignorable="d">
+    <Window.Resources>
+        <conv:ValueConverterGroup x:Key="StringToCollapsedReConverter">
+            <conv:StringIsNotNullOrEmptyConverter />
+            <conv:BoolToVisibilityConverter FalseValue="Collapsed" TrueValue="Visible" />
+        </conv:ValueConverterGroup>
+
+        <conv:BoolToVisibilityConverter x:Key="BoolToHiddenReConverter" FalseValue="Hidden" TrueValue="Visible" />
+
+
+        <Style x:Key="TextBoxStyle" BasedOn="{StaticResource {x:Type ui:TextBox}}" TargetType="{x:Type ui:TextBox}">
+            <Setter Property="Width" Value="220" />
+            <Setter Property="Height" Value="40" />
+
+            <!-- 校验失败样式 -->
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <StackPanel>
+                            <!-- TextBox 占位 -->
+                            <AdornedElementPlaceholder x:Name="placeholder" />
+                            <WrapPanel>
+                                <ui:SymbolIcon Margin="0,0,2,0"
+                                               Filled="True"
+                                               Foreground="Red"
+                                               Symbol="Warning16" />
+                                <ui:TextBlock FontTypography="Caption" Foreground="Red" Text="{Binding [0].ErrorContent}" />
+                            </WrapPanel>
+                        </StackPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+
+                    <Setter Property="Background" Value="LightCoral" />
+                    <Setter Property="BorderBrush" Value="Red" />
+                    <Setter Property="BorderThickness" Value="2" />
+                </Trigger>
+            </Style.Triggers>
+
+        </Style>
+        <Style x:Key="ProgressRingStyle" BasedOn="{StaticResource {x:Type ui:ProgressRing}}" TargetType="{x:Type ui:ProgressRing}">
+            <Setter Property="Width" Value="30" />
+            <Setter Property="Height" Value="30" />
+        </Style>
+
+
+        <Style x:Key="ValidateErrorTextBlockStyle" BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="Red" />
+
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <StackPanel HorizontalAlignment="Center">
+            <Button HorizontalAlignment="Center" Command="{Binding SwitchLanguageCommand}" Content="中/En" />
+
+            <ComboBox Width="220"
+                      DisplayMemberPath="NativeName"
+                      ItemsSource="{Binding CultureList}"
+                      SelectedItem="{Binding CurrentCulture}" />
+
+            <WrapPanel ItemHeight="60" Orientation="Vertical">
+                <ui:TextBox PlaceholderText="{I18N {x:Static m:LangKeys.Username}}" Style="{StaticResource TextBoxStyle}" Text="{Binding Username}" />
+                <!--<TextBlock Style="{StaticResource ValidateErrorTextBlockStyle}" Text="{Binding UsernameErrorMsg}" Visibility="{Binding UsernameErrorMsg, Converter={StaticResource StringToCollapsedReConverter}}" />-->
+                <ui:TextBox PlaceholderText="{I18N {x:Static m:LangKeys.Password}}" Style="{StaticResource TextBoxStyle}" Text="{Binding Password}" />
+                <!--<TextBlock Style="{StaticResource ValidateErrorTextBlockStyle}" Text="{Binding PasswordErrorMsg}" Visibility="{Binding PasswordErrorMsg, Converter={StaticResource StringToCollapsedReConverter}}" />-->
+            </WrapPanel>
+
+
+            <ui:ProgressRing Width="30"
+                             Height="30"
+                             Margin="0,20,0,10"
+                             d:Visibility="Visible"
+                             IsIndeterminate="True"
+                             Style="{StaticResource ProgressRingStyle}"
+                             Visibility="{Binding LoginCommand.IsRunning, Converter={StaticResource BoolToHiddenReConverter}}" />
+
+            <Button HorizontalAlignment="Center"
+                    d:Content="登录"
+                    Command="{Binding LoginCommand}"
+                    Content="{I18N {x:Static m:LangKeys.Login}}" />
+        </StackPanel>
+    </Grid>
+</Window>
