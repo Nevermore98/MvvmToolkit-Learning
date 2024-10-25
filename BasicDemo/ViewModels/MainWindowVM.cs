@@ -10,22 +10,36 @@ namespace BasicDemo.ViewModels
 {
     public partial class MainWindowVM : ObservableValidator
     {
-        [ObservableProperty] 
+        [ObservableProperty]
         [RegularExpression(@"^-?\d+$")] // 正则表达式验证
         [NotifyPropertyChangedFor(nameof(DisplayResult))] // 属性的值发生变化后通知属性变化
         [NotifyCanExecuteChangedFor(nameof(CalculateCommand))] // 属性的值发生变化后通知中继指令更新状态
-        string value1;
+        private string _value1;
 
-        [ObservableProperty]
+
+        // 上面的等价写法，除了增加了 CalculateCommand.Cancel() 
+        // 在等待计算时，重新输入 Value2 会取消指令
         [RegularExpression(@"^-?\d+$")]
-        [NotifyPropertyChangedFor(nameof(DisplayResult))]
-        [NotifyCanExecuteChangedFor(nameof(CalculateCommand))] // 属性的值发生变化后通知中继指令更新状态
-        string value2;
+        private string _value2;
+        public string Value2
+        {
+            get => _value2;
+            set
+            {
+                if (SetProperty(ref _value2, value, nameof(Value2)))
+                {
+                    CalculateCommand.Cancel();
+                    OnPropertyChanged(nameof(DisplayResult));
+                    CalculateCommand.NotifyCanExecuteChanged();
+                }
+            }
+        }
 
-         
+
+
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(DisplayResult))]
-       
+
         string result;
 
         public string DisplayResult => !string.IsNullOrEmpty(Value1) && !string.IsNullOrEmpty(Value2) ? $"{Value1} + {Value2} = {Result}" : string.Empty;
@@ -34,7 +48,7 @@ namespace BasicDemo.ViewModels
         [ObservableProperty]
         string status;
 
-        public bool CanCalculate => !string.IsNullOrEmpty(Value1) && ! string.IsNullOrEmpty(Value2);
+        public bool CanCalculate => !string.IsNullOrEmpty(Value1) && !string.IsNullOrEmpty(Value2);
 
         [ObservableProperty]
         string errMessage;
@@ -55,7 +69,7 @@ namespace BasicDemo.ViewModels
         //}
 
         // 异步指令
-        [RelayCommand(CanExecute =nameof(CanCalculate), IncludeCancelCommand = true)]
+        [RelayCommand(CanExecute = nameof(CanCalculate), IncludeCancelCommand = true)]
         private async Task CalculateAsync(CancellationToken token)
         {
             ValidateAllProperties();
